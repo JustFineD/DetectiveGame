@@ -1,0 +1,203 @@
+* { box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #1b1f2a;
+  color: #eee;
+  margin: 0;
+  padding: 20px;
+  direction: rtl;
+}
+h1 { margin-bottom: 0; }
+.subtitle { color: #9aa; margin-top: 4px; }
+.screen.hidden { display: none; }
+.card {
+  background: #262b3a;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 14px 0;
+  max-width: 420px;
+}
+.card h3 { margin-top: 0; }
+label { display: block; margin-bottom: 6px; font-size: 14px; color: #bbc; }
+input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1b1f2a;
+  color: #eee;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+button {
+  background: #4f7cff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+button:hover { background: #6b91ff; }
+button:disabled { background: #444; cursor: not-allowed; }
+button.btn-small {
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: linear-gradient(155deg, #5a86ff, #3f63d6);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+  letter-spacing: 0.2px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+button.btn-small:hover {
+  background: linear-gradient(155deg, #6b91ff, #4a70e0);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+button.btn-small:active { transform: translateY(0); }
+.error { color: #ff6b6b; }
+#playerList { padding-right: 18px; }
+
+#mainArea { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; align-items: flex-start; }
+#board {
+  display: block;
+  width: 100%;
+  max-width: 820px;
+  aspect-ratio: 1 / 1;
+  background: #4a4f57;
+  border-radius: 10px;
+  flex: 1 1 560px;
+}
+#sidePanel { flex: 0 0 260px; min-width: 240px; display: flex; flex-direction: column; gap: 12px; }
+.panel { background: #262b3a; border-radius: 10px; padding: 14px; }
+.panel h3 { margin-top: 0; font-size: 16px; }
+.hint { font-size: 12px; color: #9aa; margin: 4px 0 0; }
+
+#topBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+#statusMsg { font-size: 16px; font-weight: bold; }
+#foxTrack { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.progressBar { width: 160px; height: 10px; background: #333; border-radius: 5px; overflow: hidden; }
+#foxProgressFill { height: 100%; background: #e08b3c; width: 0%; transition: width .3s; }
+
+#moveArea { display: flex; flex-direction: column; gap: 8px; }
+
+/* Goal picker: one pill-shaped switch instead of two separate buttons.
+   Forced to LTR internally so "left = suspects, right = footprints" holds
+   regardless of the page's overall RTL direction. */
+#goalToggleWrap { margin: 6px 0; }
+.goal-toggle-track {
+  position: relative;
+  direction: ltr;
+  display: flex;
+  background: #1b1f2a;
+  border-radius: 999px;
+  padding: 3px;
+  gap: 0;
+}
+.goal-toggle-knob {
+  position: absolute;
+  top: 3px; bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  background: linear-gradient(155deg, #5a86ff, #3f63d6);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+  transition: left 0.25s ease, right 0.25s ease;
+  z-index: 0;
+}
+.goal-toggle-knob.pos-right { left: calc(50% + 0px); }
+.goal-toggle-label {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ddd;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#rollBtn {
+  animation: rollBtnGlow 1.6s ease-in-out infinite;
+}
+@keyframes rollBtnGlow {
+  0%, 100% { box-shadow: 0 2px 4px rgba(0,0,0,0.35), 0 0 0 0 rgba(90,134,255,0.5); }
+  50%      { box-shadow: 0 2px 4px rgba(0,0,0,0.35), 0 0 0 5px rgba(90,134,255,0); }
+}
+
+#diceRow { display: flex; gap: 14px; margin: 10px 0; perspective: 300px; }
+.die {
+  width: 56px; height: 56px; border-radius: 10px;
+  background: linear-gradient(155deg, #fdf6ea, #e6d3ae);
+  border: 1px solid #c9b287;
+  box-shadow:
+    inset 0 -3px 5px rgba(0,0,0,0.18),
+    inset 0 2px 3px rgba(255,255,255,0.7),
+    0 3px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
+  user-select: none;
+}
+.die.locked {
+  box-shadow:
+    0 0 0 3px #4f7cff,
+    inset 0 -3px 5px rgba(0,0,0,0.18),
+    inset 0 2px 3px rgba(255,255,255,0.7),
+    0 3px 6px rgba(0,0,0,0.4);
+}
+.die-face { position: relative; width: 100%; height: 100%; }
+.pip { position: absolute; }
+.pip-paw { color: #4a3626; }
+.pip-eye { color: #f2e9da; }
+
+@keyframes diceTumble {
+  0%   { transform: rotate(0deg)   scale(1); }
+  25%  { transform: rotate(-18deg) scale(1.08); }
+  50%  { transform: rotate(12deg)  scale(0.94); }
+  75%  { transform: rotate(-10deg) scale(1.06); }
+  100% { transform: rotate(0deg)   scale(1); }
+}
+.die.rolling { animation: diceTumble 0.5s ease-in-out infinite; }
+
+@keyframes diceSettle {
+  0%   { transform: scale(1.3) rotate(8deg); }
+  60%  { transform: scale(0.9) rotate(-4deg); }
+  100% { transform: scale(1)   rotate(0deg); }
+}
+.die.settle { animation: diceSettle 0.28s ease-out; }
+
+#suspectsPanel { width: 100%; margin-top: 16px; }
+#handList {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.suspect-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #1b1f2a;
+  flex: 0 0 auto;
+  width: 92px;
+  text-align: center;
+}
+.suspect-card.burned { opacity: .4; filter: grayscale(1); }
+.suspect-card .suspect-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 84px; }
+.suspect-card.burned .suspect-name { text-decoration: line-through; }
+.suspect-items { display: flex; gap: 3px; justify-content: center; }
+.suspect-items svg { width: 16px; height: 16px; color: #cfcac0; }
+
+/* Persistent per-player tokens (see game.js): kept as stable DOM nodes and
+   moved via attribute changes instead of being rebuilt every render, so the
+   browser can animate x/y smoothly (walking) instead of teleporting. */
+.player-token, .player-token-ring {
+  transition: x 0.32s ease, y 0.32s ease;
+}

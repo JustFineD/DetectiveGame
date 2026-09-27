@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מי הגנב? - משחק בלשים</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="lobby" class="screen">
+  <h1>מי הגנב?</h1>
+  <p class="subtitle">משחק בלשים שיתופי - עד 4 שחקנים</p>
+
+  <div class="card">
+    <label>השם שלך</label>
+    <input id="playerName" type="text" placeholder="לדוגמה: דניאל" maxlength="20">
+  </div>
+
+  <div class="card">
+    <h3>יצירת חדר חדש</h3>
+    <label>מספר חשודים (ברירת מחדל 25)</label>
+    <input id="numSuspects" type="number" value="25" min="8" max="30">
+    <button id="createRoomBtn">צור חדר</button>
+  </div>
+
+  <div class="card">
+    <h3>הצטרפות לחדר קיים</h3>
+    <input id="joinCode" type="text" placeholder="קוד חדר" maxlength="4" style="text-transform:uppercase">
+    <button id="joinRoomBtn">הצטרף</button>
+  </div>
+
+  <div id="roomInfo" class="card hidden">
+    <h3>חדר: <span id="roomCode"></span></h3>
+    <p>שתפו את הקוד עם שאר הבלשים</p>
+    <ul id="playerList"></ul>
+    <button id="startGameBtn" class="hidden">התחל משחק</button>
+    <p id="waitingMsg">ממתינים למארח שיתחיל את המשחק...</p>
+  </div>
+
+  <div id="lobbyError" class="error hidden"></div>
+</div>
+
+<div id="game" class="screen hidden">
+  <div id="topBar">
+    <div id="statusMsg"></div>
+    <div id="foxTrack">
+      <span>מרחק השועל מבריחה: </span>
+      <div class="progressBar"><div id="foxProgressFill"></div></div>
+      <span id="foxStepsLabel"></span>
+    </div>
+  </div>
+
+  <div id="mainArea">
+    <svg id="board" viewBox="0 0 560 560" width="100%" height="100%"></svg>
+
+    <div id="sidePanel">
+      <div id="turnPanel" class="panel">
+        <h3 id="turnTitle"></h3>
+        <div id="goalToggleWrap" class="hidden">
+          <div class="goal-toggle-track">
+            <div class="goal-toggle-knob" id="goalKnob"></div>
+            <button type="button" class="goal-toggle-label" data-goal="suspects">🕵️ לצוד</button>
+            <button type="button" class="goal-toggle-label" data-goal="footprints">👣 עקבות</button>
+          </div>
+        </div>
+        <div id="diceArea" class="hidden">
+          <div id="diceRow"></div>
+          <button id="rollBtn" class="btn-small">הטל קוביות</button>
+          <p id="rollInfo"></p>
+        </div>
+        <div id="moveArea" class="hidden">
+          <p id="stepsLabel"></p>
+          <p class="hint">לחצו על משבצת מודגשת ליד החתול כדי לזוז אליה</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="suspectsPanel" class="panel">
+    <h3>קופת חשודים: <span id="deckCount"></span></h3>
+    <div id="handList"></div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
